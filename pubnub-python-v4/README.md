@@ -15,20 +15,18 @@ As documented in our [Online Documentation](https://www.pubnub.com/docs/python/p
 
 ```pip install 'pubnub>=4.0.13'```
 
-### PubSub Example
-#### publisher.py
-![alt text][publish]
+### PubSub Demo
+![alt text][publish] ![alt text][subscribe]
 
+#### publisher.py
 This our publisher entity, we'll use it to publish messages to a channel.
 
-```python publisher.py```
+`python publisher.py`
 
 #### subscriber.py
-![alt text][subscribe]
-
 This is our subscriber entity, we'l use it to subscribe/register to a channel and listen to published messages.
 
-```python subscriber.py```
+`python subscriber.py`
 
 > NOTE: for more info please visit our [Python V4 Publish/Subscribe Tutorial for Realtime Apps](https://www.pubnub.com/docs/python/data-streams-publish-and-subscribe)
 

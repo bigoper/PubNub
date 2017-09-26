@@ -13,9 +13,12 @@ pnconfig.publish_key = 'demo'
 pnconfig.uuid = 'demo-uuid'
  
 pubnub = PubNub(pnconfig)
- 
+
+myChannel = "myDemoChannel"
+
 def my_publish_callback(envelope, status):
-    print('my_publish_callback()')
+    print('publish_callback: envelope {}'.format(envelope))
+    print('publish_callback: status {}'.format(status))
     # Check whether request successfully completed or not
     if not status.is_error():
         pass  # Message successfully published to specified channel.
@@ -31,30 +34,32 @@ class MySubscribeCallback(SubscribeCallback):
  
     def status(self, pubnub, status):
         if status.category == PNStatusCategory.PNUnexpectedDisconnectCategory:
-            print("status category: {status}".format(status='PNUnexpectedDisconnectCategory'));
+            print("status category: {status}".format(status='PNUnexpectedDisconnectCategory'))
             pass  # This event happens when radio / connectivity is lost
  
         elif status.category == PNStatusCategory.PNConnectedCategory:
             # Connect event. You can do stuff like publish, and know you'll get it.
             # Or just use the connected event to confirm you are subscribed for
             # UI / internal notifications, etc
-            print("status category: {status}".format(status='PNConnectedCategory'));
-            pubnub.publish().channel("myChannelTester").message("hello!!").async(my_publish_callback)
+            print("status category: {status}".format(status='PNConnectedCategory'))
+            pubnub.publish().channel(myChannel).message("hello!!").async(my_publish_callback)
+
         elif status.category == PNStatusCategory.PNReconnectedCategory:
-            print("status category: {status}".format(status='PNReconnectedCategory'));
+            print("status category: {status}".format(status='PNReconnectedCategory'))
             pass
             # Happens as part of our regular operation. This event happens when
             # radio / connectivity is lost, then regained.
+
         elif status.category == PNStatusCategory.PNDecryptionErrorCategory:
-            print("status category: {status}".format(status='PNDecryptionErrorCategory'));
+            print("status category: {status}".format(status='PNDecryptionErrorCategory'))
             pass
             # Handle message decryption error. Probably client configured to
             # encrypt messages and on live data feed it received plain text.
  
     def message(self, pubnub, message):
-        print("Message: {msg}".format(msg=message.message));
+        print("Message: {msg}".format(msg=message.message))
         pass  # Handle new message stored in message.message
  
  
 pubnub.add_listener(MySubscribeCallback())
-pubnub.subscribe().channels('myDemoChannel').execute()
+pubnub.subscribe().channels(myChannel).execute()
